@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DB_USER: "postgres"
+      SUPU_API_KEY: ${{ secrets.SUPU_API_KEY }}
 
     steps:
     - uses: actions/checkout@v3
@@ -36,4 +37,4 @@ jobs:
       run: echo "DB_USER -> ${DB_USER}"
 
     - name: Print Secret
-      run: echo "SUPU_API_KEY -> ${secrets.SUPU_API_KEY}"
+      run: echo "SUPU_API_KEY -> $SUPU_API_KEY"

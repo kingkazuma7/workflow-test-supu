@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DB_USER: "postgres"
+      SUPU_API_KEY: ${{ secrets.SUPU_API_KEY }}
 
     steps:
     - uses: actions/checkout@v3
@@ -28,8 +29,19 @@ jobs:
     - name: Run pytest
       run: pytest tests/
 
+    - name: Faiul if tests fail
+      if: failure()
+      run: echo "1つ前のステップが失敗しました。"
+
     - name: Print DB_USER
       run: echo "DB_USER -> ${DB_USER}"
 
     - name: Print Secret
-      run: echo "SUPU_API_KEY -> ${secrets.SUPU_API_KEY}"
+      run: echo "SUPU_API_KEY -> $SUPU_API_KEY"
+
+    - name: Get time
+      id: get-time
+      run: echo "time=$(date)" >> $GITHUB_OUTPUT
+
+    - name: Print github output
+      run: echo "1つ前の出力は = ${{ steps.get-time.outputs.time }}です"
